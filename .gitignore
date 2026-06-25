@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+filters.json
+user_tokens.json
+*.log

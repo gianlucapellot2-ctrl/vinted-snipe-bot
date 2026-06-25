@@ -4,7 +4,7 @@ scraper.py — Vinted API Calls und Polling Loop
 
 import aiohttp
 import asyncio
-from embeds import build_embed
+# build_embed wird lazy importiert (zirkulaerer Import-Fix)
 
 # Globales Dict: filter_id → asyncio.Task
 running_tasks: dict[str, asyncio.Task] = {}
@@ -71,6 +71,7 @@ async def fetch_items(
 async def post_item(item: dict, channel, bot, vinted_domain: str):
     """Postet ein einzelnes Item als Embed mit Buttons in den Channel."""
     try:
+        from embeds import build_embed  # lazy import: zirkulaeren Import vermeiden
         embed, view = await build_embed(item, vinted_domain)
         await channel.send(embed=embed, view=view)
     except Exception as e:

@@ -27,6 +27,7 @@ VINTED_COOKIES    = os.getenv("VINTED_COOKIES", "")
 VINTED_DOMAIN     = os.getenv("VINTED_DOMAIN", "vinted.de")
 POLL_INTERVAL     = int(os.getenv("POLL_INTERVAL", "4"))
 BOT_OWNER_ID      = int(os.getenv("BOT_OWNER_ID", "0"))
+GUILD_ID          = int(os.getenv("GUILD_ID", "1422555009903755287"))
 
 # ─── Bot-Instanz ──────────────────────────────────────────────────────────────
 intents = discord.Intents.default()
@@ -98,8 +99,11 @@ async def refresh_vinted_token_loop():
 @bot.event
 async def on_ready():
     print(f"[Bot] ✅ Eingeloggt als {bot.user} (ID: {bot.user.id})")
+    guild = discord.Object(id=GUILD_ID)
+    tree.copy_global_to(guild=guild)
+    await tree.sync(guild=guild)
     await tree.sync()
-    print("[Bot] Slash Commands synchronisiert.")
+    print("[Bot] Slash Commands synchronisiert (Guild + Global).")
     asyncio.create_task(refresh_vinted_token_loop())
     print("[Bot] Token Auto-Refresh gestartet (alle 90 Min).")
 
